@@ -1,0 +1,24 @@
+<% include ../header.ejs %>
+
+<div class="well jumbotron">
+  <div class="container">
+    <div class="page-header" style="text-align:center">
+      <h1>登录<small>拼客，娱乐活动最好的选择</small></h1>
+    </div>
+    <form method="post">
+      <div class="input-group">
+        <span class="input-group-addon" id="acc">登录账号</span>
+        <input type="text" class="form-control" placeholder="手机号码" aria-describedby="basic-addon1" name="acc">
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon" id="pwd">登录密码</span>
+        <input type="text" class="form-control" placeholder="密码" aria-describedby="basic-addon1" name="pwd">
+      </div>
+      <div style="text-align:center">
+        <button type="submit" class="btn btn-primary">登录</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<% include ../footer.ejs %>
