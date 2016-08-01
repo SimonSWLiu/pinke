@@ -17,7 +17,7 @@ var upload = multer({
 
 // 特针对于该路由的中间件
 router.use(function log(req, res, next) {
-  console.log('Msg : ', '我是中间件...');
+  console.log('Msg : ', 'I am middleware...');
   console.log('Time: ', Date.now());
   next();
 });
@@ -44,16 +44,15 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function (req, res) {
 
-  console.log("req.session --> " + req.session);
-
+  console.log("req.session", req.session);
+  console.log("req.session.user", req.session.user);
   var acc = req.body.acc,
-      pwd = req.body.pwd;
+      pwd = req.body.pwd,
+      md5 = crypto.createHash('md5'),
+      pwdMD5 = md5.update(req.body['pwd']).digest('hex');
 
-  console.log("acc --> " + acc);
-  console.log("pwd --> " + pwd);
-
-  var AccountModel = require('./../models/Account.js');
-  AccountModel.findOne({name: acc,pwd: pwd},function(err,doc){
+  var AccountModel = require('../models/Account.js');
+  AccountModel.findOne({name: acc,pwd: pwdMD5},function(err,doc){
     if(err) throw err;
     req.session.user = doc;
     res.render('customer/home',{ name: doc.name });
@@ -72,8 +71,8 @@ router.get('/reg', function(req, res, next) {
 
 router.post('/reg', function (req, res) {
 
-  var acc = req.body.acc,
-      pwd = req.body.pwd,
+  var acc   = req.body.acc,
+      pwd   = req.body.pwd,
       pwd_r = req.body.pwd_r;
 
   //检验用户两次输入的密码是否一致
@@ -86,7 +85,7 @@ router.post('/reg', function (req, res) {
   var md5 = crypto.createHash('md5'),
       pwdMD5 = md5.update(req.body['pwd']).digest('hex');
 
-  var AccountModel = require('./../models/Account.js');
+  var AccountModel = require('../models/Account.js');
   var account = new AccountModel({
       name: acc,
       pwd: pwdMD5
@@ -97,9 +96,5 @@ router.post('/reg', function (req, res) {
     res.render('customer/home',{ name: doc.name });
   });
 });
-
-exports.doAddAccount = function(req, res) {
-  res.send({'success':true});
-};
 
 module.exports = router;
